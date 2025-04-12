@@ -9,8 +9,6 @@ export default function PlayerList() {
 
   const { data: players, isLoading, error } = usePlayers();
 
-  console.log(players);
-
   if (error) {
     return (
       <div className="text-center py-4 text-red-500">Error loading players</div>

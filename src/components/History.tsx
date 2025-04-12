@@ -25,9 +25,9 @@ export default function History({ telegramId, take = 10 }: Props) {
             <div>
               <strong>
                 {entry.amount >= 0 ? '+' : ''}
-                {entry.amount}
+                {Math.round(entry.amount)}
               </strong>{' '}
-              DKP — {entry.event.title}
+              DKP — {entry.description}
             </div>
             <div className="text-xs text-gray-400">
               {new Date(entry.createdAt).toLocaleString()}

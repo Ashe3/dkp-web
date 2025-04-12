@@ -5,9 +5,7 @@ type HistoryItem = {
   id: number;
   amount: number;
   createdAt: string;
-  event: {
-    title: string;
-  };
+  description: string;
 };
 
 export const useUserHistory = (telegramId: string, take: number = 10) => {

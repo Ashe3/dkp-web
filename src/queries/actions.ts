@@ -14,7 +14,12 @@ export function useActionMutation(telegramId: string) {
         operatorId: user?.id,
       }),
     onSuccess: () => {
-      client.invalidateQueries({ queryKey: ['history', telegramId] });
+      client.invalidateQueries({
+        queryKey: ['history', telegramId],
+      });
+      client.invalidateQueries({
+        queryKey: ['players'],
+      });
     },
   });
 }

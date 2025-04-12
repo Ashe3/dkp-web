@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
+import { useAuth } from '../hooks/useAuth';
 
 export type Event = {
   id: number;
@@ -23,6 +24,7 @@ export const useEvents = () => {
 
 export const useCreateEvent = () => {
   const queryClient = useQueryClient();
+  const { user } = useAuth();
 
   return useMutation({
     mutationFn: async (data: {
@@ -31,7 +33,7 @@ export const useCreateEvent = () => {
       comment?: string;
       durationMinutes: number;
     }) => {
-      const res = await api.post('/events', data);
+      const res = await api.post('/events', { ...data, createdById: user?.id });
       return res.data;
     },
     onSuccess: () => {

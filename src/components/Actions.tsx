@@ -47,7 +47,12 @@ export default function Actions(props: Props) {
           className={`bg-red-700 text-white px-4 py-2 rounded ${
             isEditing ? 'opacity-50 cursor-not-allowed' : ''
           }`}
-          onClick={() => deletePlayer(telegramId)}
+          onClick={() => {
+            if (confirm('Are you sure you want to delete this player?')) {
+              props.cancelSelected();
+              deletePlayer(telegramId);
+            }
+          }}
           disabled={isEditing}
         >
           Delete

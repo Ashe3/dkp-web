@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { usePlayers } from '../queries/players';
 import Actions from './Actions';
 import History from './History';
+import DKPActions from './DKPActions';
 
 export default function PlayerList() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -89,6 +90,7 @@ export default function PlayerList() {
             )}
             cancelSelected={() => setSelectedId(null)}
           />
+          <DKPActions telegramId={selectedId} />
           <History telegramId={selectedId} />
         </>
       )}

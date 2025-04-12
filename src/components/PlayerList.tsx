@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { usePlayers } from '../queries/players';
 import Actions from './Actions';
+import History from './History';
 
 export default function PlayerList() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -81,10 +82,15 @@ export default function PlayerList() {
         </tbody>
       </table>
       {selectedId && (
-        <Actions
-          player={players?.find(({ telegramId }) => selectedId === telegramId)}
-          cancelSelected={() => setSelectedId(null)}
-        />
+        <>
+          <Actions
+            player={players?.find(
+              ({ telegramId }) => selectedId === telegramId
+            )}
+            cancelSelected={() => setSelectedId(null)}
+          />
+          <History telegramId={selectedId} />
+        </>
       )}
     </div>
   );

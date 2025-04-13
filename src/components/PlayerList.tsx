@@ -6,6 +6,8 @@ import DKPActions from './DKPActions';
 
 export default function PlayerList() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [sortKey, setSortKey] = useState<'username' | 'dkp' | 'bs' | 'multiplier' | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   const { data: players, isLoading, error } = usePlayers();
 
@@ -15,22 +17,68 @@ export default function PlayerList() {
     );
   }
 
+  const sortedPlayers = players?.slice().sort((a, b) => {
+    if (!sortKey) return 0;
+    const valA = a[sortKey];
+    const valB = b[sortKey];
+    if (sortKey === 'username') {
+      return sortDirection === 'asc'
+        ? String(valA).localeCompare(String(valB))
+        : String(valB).localeCompare(String(valA));
+    }
+    if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+    if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+
   return (
     <div>
       <table className="min-w-full bg-white rounded-lg shadow-lg overflow-hidden">
         <thead className="bg-gray-200">
           <tr>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase">
-              Nickname
+            <th
+              onClick={() => {
+                setSortKey('username');
+                setSortDirection(
+                  sortKey === 'username' && sortDirection === 'desc' ? 'asc' : 'desc'
+                );
+              }}
+              className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
+            >
+              Nickname <span className="inline-block w-4">{sortKey === 'username' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}</span>
             </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase">
-              DKP
+            <th
+              onClick={() => {
+                setSortKey('dkp');
+                setSortDirection(
+                  sortKey === 'dkp' && sortDirection === 'desc' ? 'asc' : 'desc'
+                );
+              }}
+              className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
+            >
+              DKP <span className="inline-block w-4">{sortKey === 'dkp' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}</span>
             </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase">
-              BS
+            <th
+              onClick={() => {
+                setSortKey('bs');
+                setSortDirection(
+                  sortKey === 'bs' && sortDirection === 'desc' ? 'asc' : 'desc'
+                );
+              }}
+              className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
+            >
+              BS <span className="inline-block w-4">{sortKey === 'bs' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}</span>
             </th>
-            <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase">
-              Multiplier
+            <th
+              onClick={() => {
+                setSortKey('multiplier');
+                setSortDirection(
+                  sortKey === 'multiplier' && sortDirection === 'desc' ? 'asc' : 'desc'
+                );
+              }}
+              className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
+            >
+              Multiplier <span className="inline-block w-4">{sortKey === 'multiplier' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}</span>
             </th>
           </tr>
         </thead>
@@ -50,7 +98,7 @@ export default function PlayerList() {
                     ))}
                 </tr>
               ))
-            : players
+            : sortedPlayers
                 ?.filter((player) =>
                   selectedId ? player.telegramId === selectedId : true
                 )

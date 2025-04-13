@@ -6,7 +6,9 @@ import DKPActions from './DKPActions';
 
 export default function PlayerList() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [sortKey, setSortKey] = useState<'username' | 'dkp' | 'bs' | 'multiplier' | null>(null);
+  const [sortKey, setSortKey] = useState<
+    'username' | 'dkp' | 'bs' | 'multiplier' | null
+  >(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   const { data: players, isLoading, error } = usePlayers();
@@ -40,12 +42,21 @@ export default function PlayerList() {
               onClick={() => {
                 setSortKey('username');
                 setSortDirection(
-                  sortKey === 'username' && sortDirection === 'desc' ? 'asc' : 'desc'
+                  sortKey === 'username' && sortDirection === 'desc'
+                    ? 'asc'
+                    : 'desc'
                 );
               }}
               className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
             >
-              Nickname <span className="inline-block w-4">{sortKey === 'username' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}</span>
+              Nickname{' '}
+              <span className="inline-block w-4">
+                {sortKey === 'username'
+                  ? sortDirection === 'asc'
+                    ? '▲'
+                    : '▼'
+                  : ''}
+              </span>
             </th>
             <th
               onClick={() => {
@@ -56,7 +67,10 @@ export default function PlayerList() {
               }}
               className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
             >
-              DKP <span className="inline-block w-4">{sortKey === 'dkp' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}</span>
+              DKP{' '}
+              <span className="inline-block w-4">
+                {sortKey === 'dkp' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+              </span>
             </th>
             <th
               onClick={() => {
@@ -67,18 +81,30 @@ export default function PlayerList() {
               }}
               className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
             >
-              BS <span className="inline-block w-4">{sortKey === 'bs' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}</span>
+              BS{' '}
+              <span className="inline-block w-4">
+                {sortKey === 'bs' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+              </span>
             </th>
             <th
               onClick={() => {
                 setSortKey('multiplier');
                 setSortDirection(
-                  sortKey === 'multiplier' && sortDirection === 'desc' ? 'asc' : 'desc'
+                  sortKey === 'multiplier' && sortDirection === 'desc'
+                    ? 'asc'
+                    : 'desc'
                 );
               }}
               className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
             >
-              Multiplier <span className="inline-block w-4">{sortKey === 'multiplier' ? (sortDirection === 'asc' ? '▲' : '▼') : ''}</span>
+              Multiplier{' '}
+              <span className="inline-block w-4">
+                {sortKey === 'multiplier'
+                  ? sortDirection === 'asc'
+                    ? '▲'
+                    : '▼'
+                  : ''}
+              </span>
             </th>
           </tr>
         </thead>
@@ -105,11 +131,11 @@ export default function PlayerList() {
                 .map((player, index) => (
                   <tr
                     key={player.id}
-                    className={
-                      index % 2 === 0
-                        ? 'bg-white  cursor-pointer'
-                        : 'bg-gray-50  cursor-pointer'
-                    }
+                    className={`${
+                      index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                    } cursor-pointer ${
+                      player.isBanned ? 'bg-red-100 text-red-800' : ''
+                    }`}
                     onClick={() => setSelectedId(player.telegramId)}
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-gray-900 ">

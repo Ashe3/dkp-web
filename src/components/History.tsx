@@ -25,7 +25,7 @@ export default function History({ telegramId, take = 10 }: Props) {
             <div>
               <strong>
                 {entry.amount >= 0 ? '+' : ''}
-                {Math.round(entry.amount)}
+                {entry.amount.toFixed(2)}
               </strong>{' '}
               DKP — {entry.description}
             </div>

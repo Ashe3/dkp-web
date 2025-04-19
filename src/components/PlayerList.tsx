@@ -162,7 +162,7 @@ export default function PlayerList() {
             )}
             cancelSelected={() => setSelectedId(null)}
           />
-          <DKPActions telegramId={selectedId} />
+          <DKPActions telegramId={selectedId} players={players!} />
           <History telegramId={selectedId} />
         </>
       )}

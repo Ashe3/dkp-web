@@ -12,6 +12,7 @@ export default function DKPActions({ telegramId, players }: Props) {
   const [amountDec, setAmountDec] = useState(0);
   const [note, setNote] = useState('');
   const [useMultiplier, setUseMultiplier] = useState(false);
+  const [isCheckin, setIsCheckin] = useState(false);
   const mutation = useActionMutation(telegramId);
   const player = players.find((p) => p.telegramId.toString() === telegramId);
 
@@ -22,7 +23,7 @@ export default function DKPActions({ telegramId, players }: Props) {
 
   const handleSubmit = () => {
     if (!note || totalAmount === 0) return;
-    mutation.mutate({ amount: totalAmount, note });
+    mutation.mutate({ amount: totalAmount, note, checkin: isCheckin });
     setNote('');
     setAmountInt(0);
     setAmountDec(0);
@@ -61,6 +62,14 @@ export default function DKPActions({ telegramId, players }: Props) {
             onChange={(e) => setUseMultiplier(e.target.checked)}
           />
           Apply multiplier ({player?.multiplier ?? 1})
+        </label>
+        <label className="text-sm flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={isCheckin}
+            onChange={(e) => setIsCheckin(e.target.checked)}
+          />
+          Mark as Check-in
         </label>
         <div className="text-sm text-gray-600">
           Total DKP to apply: <strong>{totalAmount.toFixed(2)}</strong>

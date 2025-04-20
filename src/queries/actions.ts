@@ -7,7 +7,7 @@ export function useActionMutation(telegramId: string) {
   const { user } = useAuth();
 
   return useMutation({
-    mutationFn: (data: { amount: number; note: string }) =>
+    mutationFn: (data: { amount: number; note: string; checkin: boolean }) =>
       api.post('/actions', {
         ...data,
         targetTelegramId: telegramId,

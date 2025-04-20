@@ -9,6 +9,7 @@ export interface Player {
   multiplier: number;
   telegramId: string;
   isBanned: boolean;
+  weeklyCheckins: number;
 }
 
 export const usePlayers = () =>

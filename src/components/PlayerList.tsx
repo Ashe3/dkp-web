@@ -7,7 +7,7 @@ import DKPActions from './DKPActions';
 export default function PlayerList() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<
-    'username' | 'dkp' | 'bs' | 'multiplier' | null
+    'username' | 'dkp' | 'bs' | 'weeklyCheckins' | null
   >(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
@@ -21,16 +21,21 @@ export default function PlayerList() {
 
   const sortedPlayers = players?.slice().sort((a, b) => {
     if (!sortKey) return 0;
-    const valA = a[sortKey];
-    const valB = b[sortKey];
+    if (sortKey === 'weeklyCheckins') {
+      const aVal = a.weeklyCheckins ?? 0;
+      const bVal = b.weeklyCheckins ?? 0;
+      return sortDirection === 'asc' ? aVal - bVal : bVal - aVal;
+    }
+    const valA = a[sortKey] ?? 0;
+    const valB = b[sortKey] ?? 0;
     if (sortKey === 'username') {
       return sortDirection === 'asc'
         ? String(valA).localeCompare(String(valB))
         : String(valB).localeCompare(String(valA));
     }
-    if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
-    if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
-    return 0;
+    return sortDirection === 'asc'
+      ? Number(valA) - Number(valB)
+      : Number(valB) - Number(valA);
   });
 
   return (
@@ -88,18 +93,18 @@ export default function PlayerList() {
             </th>
             <th
               onClick={() => {
-                setSortKey('multiplier');
+                setSortKey('weeklyCheckins');
                 setSortDirection(
-                  sortKey === 'multiplier' && sortDirection === 'desc'
+                  sortKey === 'weeklyCheckins' && sortDirection === 'desc'
                     ? 'asc'
                     : 'desc'
                 );
               }}
               className="px-6 py-3 text-left text-sm font-semibold text-gray-700 uppercase cursor-pointer select-none hover:underline"
             >
-              Multiplier{' '}
+              Weekly Check-ins{' '}
               <span className="inline-block w-4">
-                {sortKey === 'multiplier'
+                {sortKey === 'weeklyCheckins'
                   ? sortDirection === 'asc'
                     ? '▲'
                     : '▼'
@@ -148,7 +153,7 @@ export default function PlayerList() {
                       {player.bs}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-700">
-                      {player.multiplier}
+                      {player.weeklyCheckins}
                     </td>
                   </tr>
                 ))}
